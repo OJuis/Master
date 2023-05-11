@@ -13,6 +13,9 @@
             <option value="$PROJECT_DIR$/git" />
             <option value="$PROJECT_DIR$/git/logger" />
             <option value="$PROJECT_DIR$/logger" />
+            <option value="$PROJECT_DIR$/user" />
+            <option value="$PROJECT_DIR$/user/util" />
+            <option value="$PROJECT_DIR$/util" />
           </set>
         </option>
       </GradleProjectSettings>
