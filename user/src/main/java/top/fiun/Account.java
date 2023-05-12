@@ -35,4 +35,7 @@ public class Account {
         this.passwordHash = Hash.getHashString(password);
     }
 
+    public boolean verify(String password) throws HashException {
+        return this.passwordHash.equals(Hash.getHashString(password));
+    }
 }

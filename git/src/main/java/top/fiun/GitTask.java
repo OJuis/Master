@@ -2,12 +2,8 @@ package top.fiun;
 
 import org.eclipse.jgit.api.CommitCommand;
 import org.eclipse.jgit.api.Git;
-
-import org.eclipse.jgit.api.PullCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
-import org.eclipse.jgit.lib.Repository;
-import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GHIssueBuilder;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
@@ -15,7 +11,7 @@ import org.kohsuke.github.GitHub;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URL;
+import java.net.URISyntaxException;
 
 public class GitTask {
     private GitHub gitHubConnection;
@@ -39,11 +35,11 @@ public class GitTask {
         command.call();
     }
 
-    public void pullFromOriginalRepository() throws IOException {
+    public void pullFromOriginalRepository() throws IOException, GitAPIException, URISyntaxException {
         // fork
         this.ownRepository = this.originalRepository.fork();
         // pull
-        localWorkplace.pull().setRemote(ownRepository.getHtmlUrl().toString());
+        this.downloadRemoteRepository(this.ownRepository.getHtmlUrl().toURI());
     }
 
     public void pushToOriginalRepository() {
@@ -62,7 +58,13 @@ public class GitTask {
         issueBuilder.body(message);
     }
 
-    private void downLoadRemoteRepository(URI remoteRepositoryURI) {
+    private void downloadRemoteRepository(URI remoteRepositoryURI) throws GitAPIException {
+        localWorkplace.pull().setRemote(remoteRepositoryURI.toString()).call();
+    }
 
+    private void createDirectory(File file) {
+        if (!file.exists() && file.isDirectory()) {
+            file.mkdirs();
+        }
     }
 }
